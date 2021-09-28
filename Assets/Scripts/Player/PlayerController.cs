@@ -27,25 +27,25 @@ public class PlayerController : MonoBehaviour
         if (x > 0)
         {
             playerController.transform.rotation = Quaternion.Euler(-90,0,180);
-            ps.ChangeDirection(1);
+            ps.ChangeDirection(new Vector3(1,0,0));
         }
         
         if (x < 0)
         {
             playerController.transform.rotation = Quaternion.Euler(-90,0,0);
-            ps.ChangeDirection(-1);
+            ps.ChangeDirection(new Vector3(-1,0,0));
         }
         
         if (y > 0)
         {
             playerController.transform.rotation = Quaternion.Euler(-90,0,90);
-            ps.ChangeDirection(1);
+            ps.ChangeDirection(new Vector3(0,0,1));
         }
         
         if (y < 0)
         {
             playerController.transform.rotation = Quaternion.Euler(-90,0,270);
-            ps.ChangeDirection(-1);
+            ps.ChangeDirection(new Vector3(0,0,-1));
         }
     }
 }

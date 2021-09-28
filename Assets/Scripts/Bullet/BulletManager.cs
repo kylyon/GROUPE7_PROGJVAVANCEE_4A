@@ -10,13 +10,13 @@ public class BulletManager : MonoBehaviour
 
     private static BulletManager _singleton;
 
-    private Dictionary<Transform, int> bullets;
+    private Dictionary<Transform, Vector3> bullets;
 
     // Start is called before the first frame update
     void Start()
     {
         _singleton = this;
-        bullets = new Dictionary<Transform, int>();
+        bullets = new Dictionary<Transform, Vector3>();
     }
 
     // Update is called once per frame
@@ -24,12 +24,12 @@ public class BulletManager : MonoBehaviour
     {
         foreach (var bullet in bullets)
         {
-            bullet.Key.position += new Vector3(bullet.Value, 0, 0) * Time.fixedDeltaTime;
+            bullet.Key.position += bullet.Value * Time.fixedDeltaTime;
         }
     }
 
 
-    public void AddBullet(Transform bullet, int direction)
+    public void AddBullet(Transform bullet, Vector3 direction)
     {
         bullets.Add(bullet, direction);
     }

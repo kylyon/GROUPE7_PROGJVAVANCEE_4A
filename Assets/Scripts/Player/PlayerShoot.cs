@@ -8,7 +8,7 @@ public class PlayerShoot : MonoBehaviour
 
     public Transform shooterPosition;
 
-    public int shootDirection = 1;
+    public Vector3 shootDirection = new Vector3(1,0,0);
 
     private float fireRate = 0.6f;
     
@@ -18,7 +18,7 @@ public class PlayerShoot : MonoBehaviour
         
     }
 
-    public void ChangeDirection(int direction)
+    public void ChangeDirection(Vector3 direction)
     {
         shootDirection = direction;
     }
