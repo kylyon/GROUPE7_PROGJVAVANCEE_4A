@@ -235,11 +235,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 89.98, y: 0, z: 90}
---- !u!4 &608835610 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 1145587800384501509, guid: fc54bfbb58ed8f34783fbcdcc27321c5, type: 3}
-  m_PrefabInstance: {fileID: 1145587800397939857}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -668,6 +663,11 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+--- !u!4 &1057415047 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6956039362975714188, guid: d3a7a1b09879d0d4da041a33a7856caa, type: 3}
+  m_PrefabInstance: {fileID: 6090258685925852346}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1177411523
 GameObject:
   m_ObjectHideFlags: 0
@@ -923,8 +923,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bullet: {fileID: 3850734895781614481, guid: df82f187dab148f408686da114705c44, type: 3}
-  shooterPosition: {fileID: 608835610}
+  shooterPosition: {fileID: 1057415047}
   shootDirection: {x: 1, y: 0, z: 0}
+  playerNumber: 2
 --- !u!143 &919132148887360916
 CharacterController:
   m_ObjectHideFlags: 0
@@ -1069,6 +1070,10 @@ PrefabInstance:
       propertyPath: playerController
       value: 
       objectReference: {fileID: 919132149583213084}
+    - target: {fileID: 1145587798661415419, guid: fc54bfbb58ed8f34783fbcdcc27321c5, type: 3}
+      propertyPath: playerNumber
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1145587800384501509, guid: fc54bfbb58ed8f34783fbcdcc27321c5, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.01715
