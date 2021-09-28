@@ -16,14 +16,14 @@ public class CameraAnimationPlayerSelection : MonoBehaviour
     // Start is called before the first frame update
     public void Action()
     {
-        BulletController.hitmanScore = 0;
+        /*BulletController.hitmanScore = 0;
         BulletController.jokerScore = 0;
         Time.timeScale = 1f;
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);*/
 
-        /*MainPanel.SetActive(false);
+        MainPanel.SetActive(false);
         PlayerSelectionPanel.SetActive(true);
-        camAnim.Play();*/
+        camAnim.Play();
     }
 
 

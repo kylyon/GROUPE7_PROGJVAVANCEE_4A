@@ -13,12 +13,12 @@ public class BulletController : MonoBehaviour
     {
         if (other.gameObject.tag.Equals("Ground"))
         {
-            Debug.Log("Ground");
+            //Debug.Log("Ground");
             BulletManager.Instance().RemoveBullet(this.gameObject.transform);
             
         }
         
-        if (other.gameObject.tag.Equals("Player") && other.gameObject != gameObject)
+        if ((other.gameObject.tag.Equals("Hitman") || other.gameObject.tag.Equals("Joker")) && other.gameObject != gameObject)
         {
             if (other.gameObject.name == "hitman")
             {

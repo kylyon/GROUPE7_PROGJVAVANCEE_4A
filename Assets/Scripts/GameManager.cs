@@ -17,9 +17,6 @@ public class GameManager : MonoBehaviour
 
     private static GameManager _singleton;
 
-    private int playerHitman;
-    private int playerJoker;
-
     public float timeValue = 90;
     public TMP_Text textToDisplayTime;
     public TMP_Text hitmanScoreToDisplay;
@@ -54,28 +51,6 @@ public class GameManager : MonoBehaviour
             jokerScoreToDisplay.text = BulletController.jokerScore.ToString();
         }
         
-    }
-
-    public bool SetPlayerHitman(int player)
-    {
-        if (playerHitman != 0)
-        {
-            return false;
-        }
-
-        playerHitman = player;
-        return true;
-    }
-    
-    public bool SetPlayerJoker(int player)
-    {
-        if (playerJoker != 0)
-        {
-            return false;
-        }
-
-        playerJoker = player;
-        return true;
     }
 
 

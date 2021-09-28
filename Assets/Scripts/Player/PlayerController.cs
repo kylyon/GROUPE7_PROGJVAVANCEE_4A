@@ -8,20 +8,57 @@ public class PlayerController : MonoBehaviour
     public int playerNumber;
     public int speed;
     public PlayerShoot ps;
+    
+    public Dictionary<Action, (int, int)> allPossibleActionsMove;
+    List<Action> actions;
 
     private Vector3 direction;
     
     // Start is called before the first frame update
     void Start()
     {
+        if (this.gameObject.tag.Equals("Hitman"))
+        {
+            playerNumber = GameData.getPlayerHitman();
+        }
+        else
+        {
+            playerNumber = GameData.getPlayerJoker();
+        }
         
+        
+        Debug.Log(GameData.getPlayerHitman());
+        Debug.Log(playerNumber);
+
+        allPossibleActionsMove = new Dictionary<Action, (int, int)>();
+        allPossibleActionsMove.Add(Action.Left, (-1, 0));
+        allPossibleActionsMove.Add(Action.Right, (1, 0));
+        allPossibleActionsMove.Add(Action.Up, (0, 1));
+        allPossibleActionsMove.Add(Action.Down, (0, -1));
+        actions = new List<Action>(allPossibleActionsMove.Keys);
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
-        var x = Input.GetAxis("P" + playerNumber + "_Horizontal");
-        var y = Input.GetAxis("P" + playerNumber + "_Vertical");
+
+        float x = 0;
+        float y = 0;
+
+        if (playerNumber == 0)
+        {
+            int selectedAction = Random.Range(0, 4);
+            
+            x = allPossibleActionsMove[actions[selectedAction]].Item1;
+            y = allPossibleActionsMove[actions[selectedAction]].Item2;
+        }
+        else
+        {
+            x = Input.GetAxis("P" + playerNumber + "_Horizontal");
+            y = Input.GetAxis("P" + playerNumber + "_Vertical");
+        }
+        
+        
 
         playerController.Move(new Vector3(x, -2 * Time.deltaTime, y).normalized * (speed * Time.fixedDeltaTime));
 
