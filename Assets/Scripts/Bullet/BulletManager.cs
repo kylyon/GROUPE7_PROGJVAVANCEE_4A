@@ -12,6 +12,8 @@ public class BulletManager : MonoBehaviour
 
     private Dictionary<Transform, Vector3> bullets;
 
+    public float speed = 20f;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -24,7 +26,7 @@ public class BulletManager : MonoBehaviour
     {
         foreach (var bullet in bullets)
         {
-            bullet.Key.position += bullet.Value * Time.fixedDeltaTime;
+            bullet.Key.position += bullet.Value * (speed * Time.deltaTime);
         }
     }
 
