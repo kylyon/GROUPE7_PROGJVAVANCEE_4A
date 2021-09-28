@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class CameraAnimationPlayerSelection : MonoBehaviour
 {
@@ -15,8 +16,19 @@ public class CameraAnimationPlayerSelection : MonoBehaviour
     // Start is called before the first frame update
     public void Action()
     {
-        MainPanel.SetActive(false);
+        BulletController.hitmanScore = 0;
+        BulletController.jokerScore = 0;
+        Time.timeScale = 1f;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+
+        /*MainPanel.SetActive(false);
         PlayerSelectionPanel.SetActive(true);
-        camAnim.Play();
+        camAnim.Play();*/
+    }
+
+
+    public void QuitGame()
+    {
+        Application.Quit();
     }
 }

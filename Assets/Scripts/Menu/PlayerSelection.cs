@@ -12,7 +12,7 @@ public class PlayerSelection : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Q) && p1Controller.rectTransform.anchoredPosition.x >= 0)
+        /*if (Input.GetKeyDown(KeyCode.Q) && p1Controller.rectTransform.anchoredPosition.x >= 0)
         {
             if (GameManager.Instance().SetPlayerHitman(1))
             {
@@ -43,7 +43,8 @@ public class PlayerSelection : MonoBehaviour
             {
                 p2Controller.rectTransform.anchoredPosition += new Vector2(400, 0);
             }
-        }
+        }*/
+        
         
     }
 }

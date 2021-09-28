@@ -28,7 +28,7 @@ public class PlayerShoot : MonoBehaviour
     void Update()
     {
         fireRate -= Time.deltaTime;
-        Debug.Log(fireRate);
+        //Debug.Log(fireRate);
         if (Input.GetAxis("P" + playerNumber + "_Shoot") > 0 && fireRate < 0)
         {
             var newBullet = Instantiate(bullet, new Vector3(shooterPosition.position.x, shooterPosition.position.y, shooterPosition.position.z), Quaternion.Euler(0,0,0));

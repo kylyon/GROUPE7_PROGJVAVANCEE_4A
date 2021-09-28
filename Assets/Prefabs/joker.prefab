@@ -11,9 +11,13 @@ GameObject:
   - component: {fileID: 5984803953227582353}
   - component: {fileID: 7251236209009411124}
   - component: {fileID: 4847394511873388798}
+  - component: {fileID: 2878113848784210530}
+  - component: {fileID: 676629812096260829}
+  - component: {fileID: 8821582505156195139}
+  - component: {fileID: 6933977231867165070}
   m_Layer: 0
   m_Name: joker
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -88,6 +92,69 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &2878113848784210530
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6360661366533755179}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.025360124, y: 0.03668611, z: 0.033025157}
+  m_Center: {x: -0.0004260833, y: -0.0000023692844, z: 0.01661103}
+--- !u!143 &676629812096260829
+CharacterController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6360661366533755179}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Height: 0
+  m_Radius: 0.018
+  m_SlopeLimit: 45
+  m_StepOffset: 0
+  m_SkinWidth: 0.08
+  m_MinMoveDistance: 0.001
+  m_Center: {x: 0, y: 0, z: 0.015}
+--- !u!114 &8821582505156195139
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6360661366533755179}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f455b86772c1b5247bf5b620d6a5c43b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bullet: {fileID: 3850734895781614481, guid: df82f187dab148f408686da114705c44, type: 3}
+  shooterPosition: {fileID: 6956039362975714188}
+  shootDirection: {x: 1, y: 0, z: 0}
+  playerNumber: 2
+--- !u!114 &6933977231867165070
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6360661366533755179}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 27f2125cf921f1642a33d0cccd0637e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerController: {fileID: 676629812096260829}
+  playerNumber: 2
+  speed: 5
+  ps: {fileID: 8821582505156195139}
 --- !u!1 &6531851714616512988
 GameObject:
   m_ObjectHideFlags: 0
