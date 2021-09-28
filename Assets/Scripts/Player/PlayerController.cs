@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     public CharacterController playerController;
+    public int playerNumber;
     public int speed;
     public PlayerShoot ps;
 
@@ -19,8 +20,8 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        var x = Input.GetAxis("Horizontal");
-        var y = Input.GetAxis("Vertical");
+        var x = Input.GetAxis("P" + playerNumber + "_Horizontal");
+        var y = Input.GetAxis("P" + playerNumber + "_Vertical");
 
         playerController.Move(new Vector3(x, -2 * Time.deltaTime, y).normalized * (speed * Time.fixedDeltaTime));
 
