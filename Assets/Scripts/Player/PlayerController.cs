@@ -17,14 +17,14 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if (this.gameObject.tag.Equals("Hitman"))
+        /*if (this.gameObject.tag.Equals("Hitman"))
         {
             playerNumber = GameData.getPlayerHitman();
         }
-        else
+        if (this.gameObject.tag.Equals("Joker"))
         {
             playerNumber = GameData.getPlayerJoker();
-        }
+        }*/
         
         
         Debug.Log(GameData.getPlayerHitman());
@@ -52,7 +52,8 @@ public class PlayerController : MonoBehaviour
             x = allPossibleActionsMove[actions[selectedAction]].Item1;
             y = allPossibleActionsMove[actions[selectedAction]].Item2;
         }
-        else
+
+        if (playerNumber == 1 || playerNumber == 2)
         {
             x = Input.GetAxis("P" + playerNumber + "_Horizontal");
             y = Input.GetAxis("P" + playerNumber + "_Vertical");

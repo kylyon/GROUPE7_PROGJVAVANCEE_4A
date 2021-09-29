@@ -19,7 +19,7 @@ public class RandomAIMovement : MonoBehaviour
             ChangeDirection();
         }
  
-        rigidbody3D.velocity = transform.up * 2;
+        //rigidbody3D.velocity = transform.up * 2;
     }
  
  

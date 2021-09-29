@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,7 +14,13 @@ public class PlayerSelection : MonoBehaviour
     private int p2Position = 0;
 
     public GameObject errorPlayer;
-    
+
+    private void Start()
+    {
+        GameData.setPlayerHitman(0);
+        GameData.setPlayerJoker(0);
+    }
+
 
     // Update is called once per frame
     void Update()

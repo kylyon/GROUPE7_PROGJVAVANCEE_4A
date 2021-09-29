@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -13,22 +14,37 @@ public class Test : MonoBehaviour
 {
     public Transform transformTest;
     public Transform target;
+
+
+    public Collider redCube;
+
+    public Collider bullet;
+
+    public PlayerShoot ps;
+    
+    
     public Vector3 destination;
     public Vector3 targetLastPosition;
     
     public Dictionary<Action, (int, int)> allPossibleActionsResult;
     public Dictionary<Action, (int, int)> allPossibleActionsMove;
+
+    private List<Action> actionsToDo;
+
+    private Node root;
+
+    private float time = 5f;
     
     private Action bestAction;
     // Start is called before the first frame update
     void Start()
     {
-        allPossibleActionsResult = new Dictionary<Action, (int, int)>();
+        /*allPossibleActionsResult = new Dictionary<Action, (int, int)>();
         allPossibleActionsResult.Add(Action.Left, (0, 0));
         allPossibleActionsResult.Add(Action.Right, (0, 0));
         allPossibleActionsResult.Add(Action.Up, (0, 0));
         allPossibleActionsResult.Add(Action.Down, (0, 0));
-        //allPossibleActionsResult.Add(Action.Shoot, 0);
+        //allPossibleActionsResult.Add(Action.Shoot, 0);*/
 
         allPossibleActionsMove = new Dictionary<Action, (int, int)>();
         allPossibleActionsMove.Add(Action.Left, (-1, 0));
@@ -36,17 +52,35 @@ public class Test : MonoBehaviour
         allPossibleActionsMove.Add(Action.Up, (0, 1));
         allPossibleActionsMove.Add(Action.Down, (0, -1));
         //allPossibleActionsMove.Add(Action.Shoot, (0, 0));
+
+        actionsToDo = new List<Action>();
+
+        root = new Node();
     }
 
     // Update is called once per frame
     void Update()
     {
+        /*time -= Time.deltaTime;
+
+        if (time <= 0)
+        {
+            redCube.transform.position = new Vector3(Random.Range(-5, 5), Random.Range(-5, 5), 0);
+            time = 5f;
+        }*/
+        
 
         if (transformTest.position != target.position)
         {
             Debug.Log("Next Step");
-            ComputeMCTS();
+            ComputeMCTS(root, 10);
+            //Debug.Log($"{bestAction} : {root.GetVictories()}/{root.GetTry()}");
             transformTest.position += new Vector3(allPossibleActionsMove[bestAction].Item1, allPossibleActionsMove[bestAction].Item2, 0);
+
+            //actionsToDo = new List<Action>();
+            
+            root = new Node();
+            //UnityEditor.EditorApplication.isPlaying = false;
         }
         
 
@@ -55,16 +89,140 @@ public class Test : MonoBehaviour
 
     }
     
-    void ComputeMCTS()
+    void ComputeMCTS(Node root, int height)
     {
-        int numberTry = 2;
+        if (height < 0)
+        {
+            return;
+        }
+        
+        int numberTry = 30;
+        float max = -1;
+        
+        foreach (var possibleAction in allPossibleActionsMove) //Expansion
+        {
+            Node temp = new Node();
+            temp.parent = root;
+            temp.SetAction(possibleAction.Key);
+            int numberVictory = 0;
+            for (int i = 0; i < numberTry; i++)
+            {
+                numberVictory += SimulateResult(possibleAction.Key); //Simulation (a faire plusieurs fois !)
+            }
+            
+            temp.AddVictories(numberVictory, numberTry); //Retropropagation
+            
+            //allPossibleActionsResult[possibleAction.Key] = (numberVictory, numberTry); //Retropropagation
+
+
+            root.AddChildren(temp);
+        }
+        root.UpdateNode();
+
+        Node bestChild = null;
+        
+        foreach (var child in root.GetChildrens())
+        {
+            if(max < (float)child.GetVictories()/(float)child.GetTry()) //SimulationResult > -1
+            {
+                max = (float) child.GetVictories() / (float) child.GetTry();
+                bestChild = child;
+            }
+            
+            //Debug.Log($"{child.GetAction()} : {child.GetVictories()}/{child.GetTry()}");
+            
+            //Debug.Log($"{height}");
+        }
+        //actionsToDo.Add(bestAction);
+        ComputeMCTS(bestChild, height - 1);
+        bestAction = bestChild.GetAction();
+        
+        //Debug.Log($"{bestAction} : {max}");
+        //Debug.Log("============================");
+    }
+    
+    int SimulateResult(Action possibleAction)
+    {
+        List<Action> actions = new List<Action>(allPossibleActionsMove.Keys);
+        var positionPlayerTemp = transformTest.localPosition;
+        
+        /*var isBulletShot = 0;
+        List<Vector3> positionBulletTemp = new List<Vector3>();
+
+        var positionEnemyTemp = redCube.transform.localPosition;*/
+        
+        positionPlayerTemp += new Vector3(allPossibleActionsMove[possibleAction].Item1, allPossibleActionsMove[possibleAction].Item2, 0);
+
+        /*if (possibleAction == Action.Shoot)
+        {
+            isBulletShot++;
+            positionBulletTemp.Add(transformTest.transform.localPosition + new Vector3(1,0,0));
+        }*/
+        
+        var result = 1;
+        while (positionPlayerTemp != target.position) //Attention votre jeu doit être fini !
+        {
+            //List<Action> actions = Game.GetNextPossibleAction(possibleAction);
+            int selectedAction = Random.Range(0, 4);
+            
+            positionPlayerTemp += new Vector3(allPossibleActionsMove[actions[selectedAction]].Item1, allPossibleActionsMove[actions[selectedAction]].Item2, 0);
+
+            /*if (actions[selectedAction] == Action.Shoot)
+            {
+                isBulletShot++;
+                positionBulletTemp.Add(transformTest.transform.localPosition + new Vector3(1,0,0));
+            }
+
+            for (var i = 0; i < positionBulletTemp.Count; i++)
+            {
+                positionBulletTemp[i] += new Vector3(1, 0, 0);
+                
+                if (-20 > positionBulletTemp[i].x || positionBulletTemp[i].x > 20)
+                {
+                    isBulletShot--;
+                }
+            
+                if (-20 > positionBulletTemp[i].y || positionBulletTemp[i].y > 20)
+                {
+                    isBulletShot--;
+                }
+                
+            }*/
+            
+            if (-20 > positionPlayerTemp.x || positionPlayerTemp.x > 20)
+            {
+                result = 0;
+                return result;
+            }
+            
+            if (-20 > positionPlayerTemp.y || positionPlayerTemp.y > 20)
+            {
+                result = 0;
+                return result;
+            }
+            
+            
+        }
+        
+        
+        return result; //0 si perdu 1 si win
+    }
+    
+    
+    
+    /*void ComputeMCTS()
+    {
+        int numberTry = 30;
         int max = -1;
         
         foreach (var possibleAction in allPossibleActionsMove) //Expansion
         {
             int numberVictory = 0;
-            numberVictory = Expansion(numberTry);
-            allPossibleActionsResult[possibleAction.Key] = (numberVictory, numberTry * 2); //Retropropagation
+            for (int i = 0; i < numberTry; i++)
+            {
+                numberVictory += SimulateResult(possibleAction.Key); //Simulation (a faire plusieurs fois !)
+            }
+            allPossibleActionsResult[possibleAction.Key] = (numberVictory, numberTry); //Retropropagation
             Debug.Log($"{possibleAction.Key} : {numberVictory}");
             if(max < allPossibleActionsResult[possibleAction.Key].Item1) //SimulationResult > -1
             {
@@ -74,32 +232,7 @@ public class Test : MonoBehaviour
         }
         
     }
-
-    int Expansion( int nbTry)
-    {
-        if (nbTry == 0)
-        {
-            return 0;
-        }
-        
-        int max = -1;
-        int numberVictory = 0;
-        
-        foreach (var possibleAction in allPossibleActionsMove) //Expansion
-        {
-            
-            for (int i = 0; i < 2; i++)
-            {
-                numberVictory += SimulateResult(possibleAction.Key); //Simulation (a faire plusieurs fois !)
-            }
-            //allPossibleActionsResult[possibleAction.Key] = (allPossibleActionsResult[possibleAction.Key].Item1 + numberVictory, allPossibleActionsResult[possibleAction.Key] + 30); //Retropropagation
-            
-
-        }
-
-        return numberVictory + Expansion(nbTry--);
-    }
-
+    
     int SimulateResult(Action possibleAction)
     {
         List<Action> actions = new List<Action>(allPossibleActionsResult.Keys);
@@ -131,7 +264,7 @@ public class Test : MonoBehaviour
         else
         {
             
-        }*/
+        }
         
         
         positionTemp += new Vector3(allPossibleActionsMove[possibleAction].Item1, allPossibleActionsMove[possibleAction].Item2, 0);
@@ -157,6 +290,6 @@ public class Test : MonoBehaviour
             }
         }
         return result; //0 si perdu 1 si win
-    }
+    }*/
 
 }
