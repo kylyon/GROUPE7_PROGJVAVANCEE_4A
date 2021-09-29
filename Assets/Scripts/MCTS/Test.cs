@@ -34,6 +34,8 @@ public class Test : MonoBehaviour
     private Node root;
 
     private float time = 5f;
+
+    public float timeMCTS = GameManager.timeValue;
     
     private Action bestAction;
     // Start is called before the first frame update
@@ -61,20 +63,12 @@ public class Test : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        /*time -= Time.deltaTime;
-
-        if (time <= 0)
-        {
-            redCube.transform.position = new Vector3(Random.Range(-5, 5), Random.Range(-5, 5), 0);
-            time = 5f;
-        }*/
-        
 
         if (transformTest.position != target.position)
         {
             Debug.Log("Next Step");
-            ComputeMCTS(root, 10);
-            //Debug.Log($"{bestAction} : {root.GetVictories()}/{root.GetTry()}");
+            ComputeMCTS(root, 5);
+            Debug.Log($"{bestAction} : {root.GetVictories()}/{root.GetTry()}");
             transformTest.position += new Vector3(allPossibleActionsMove[bestAction].Item1, allPossibleActionsMove[bestAction].Item2, 0);
 
             //actionsToDo = new List<Action>();
@@ -107,13 +101,12 @@ public class Test : MonoBehaviour
             int numberVictory = 0;
             for (int i = 0; i < numberTry; i++)
             {
-                numberVictory += SimulateResult(possibleAction.Key); //Simulation (a faire plusieurs fois !)
+                numberVictory += SimulateResult(possibleAction.Key, Time.deltaTime); //Simulation (a faire plusieurs fois !)
             }
             
             temp.AddVictories(numberVictory, numberTry); //Retropropagation
             
             //allPossibleActionsResult[possibleAction.Key] = (numberVictory, numberTry); //Retropropagation
-
 
             root.AddChildren(temp);
         }
@@ -141,10 +134,11 @@ public class Test : MonoBehaviour
         //Debug.Log("============================");
     }
     
-    int SimulateResult(Action possibleAction)
+    int SimulateResult(Action possibleAction, float deltaTimeConstant)
     {
         List<Action> actions = new List<Action>(allPossibleActionsMove.Keys);
         var positionPlayerTemp = transformTest.localPosition;
+        Dictionary<Transform, Vector3> positionBulletTemp = new Dictionary<Transform, Vector3>();
         
         /*var isBulletShot = 0;
         List<Vector3> positionBulletTemp = new List<Vector3>();
@@ -153,6 +147,14 @@ public class Test : MonoBehaviour
         
         positionPlayerTemp += new Vector3(allPossibleActionsMove[possibleAction].Item1, allPossibleActionsMove[possibleAction].Item2, 0);
 
+        if (BulletManager.bullets.Count > 0)
+        {
+            foreach (var b in BulletManager.bullets)
+            {
+                positionBulletTemp.Add(b.Key, b.Value);
+            }
+        }
+
         /*if (possibleAction == Action.Shoot)
         {
             isBulletShot++;
@@ -160,13 +162,19 @@ public class Test : MonoBehaviour
         }*/
         
         var result = 1;
-        while (positionPlayerTemp != target.position) //Attention votre jeu doit être fini !
+        while (timeMCTS > 0) //Attention votre jeu doit être fini !
         {
             //List<Action> actions = Game.GetNextPossibleAction(possibleAction);
             int selectedAction = Random.Range(0, 4);
             
             positionPlayerTemp += new Vector3(allPossibleActionsMove[actions[selectedAction]].Item1, allPossibleActionsMove[actions[selectedAction]].Item2, 0);
-
+            Debug.Log(positionBulletTemp);
+            foreach (var b in positionBulletTemp)
+            {
+                b.Key.position += b.Value;
+            }
+            Debug.Log(positionBulletTemp);
+            
             /*if (actions[selectedAction] == Action.Shoot)
             {
                 isBulletShot++;
@@ -189,19 +197,20 @@ public class Test : MonoBehaviour
                 
             }*/
             
-            if (-20 > positionPlayerTemp.x || positionPlayerTemp.x > 20)
+            if (-29 > positionPlayerTemp.x || positionPlayerTemp.x > 29)
             {
                 result = 0;
                 return result;
             }
             
-            if (-20 > positionPlayerTemp.y || positionPlayerTemp.y > 20)
+            if (-41 > positionPlayerTemp.y || positionPlayerTemp.y > 18)
             {
                 result = 0;
                 return result;
             }
-            
-            
+
+            timeMCTS -= deltaTimeConstant;
+
         }
         
         

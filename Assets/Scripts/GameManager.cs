@@ -17,7 +17,7 @@ public class GameManager : MonoBehaviour
 
     private static GameManager _singleton;
 
-    public float timeValue = 90;
+    public static float timeValue = 90;
     public TMP_Text textToDisplayTime;
     public TMP_Text hitmanScoreToDisplay;
     public TMP_Text jokerScoreToDisplay;

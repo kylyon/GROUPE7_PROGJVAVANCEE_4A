@@ -10,7 +10,7 @@ public class BulletManager : MonoBehaviour
 
     private static BulletManager _singleton;
 
-    private Dictionary<Transform, Vector3> bullets;
+    public static Dictionary<Transform, Vector3> bullets;
 
     public float speed = 20f;
 
