@@ -150,12 +150,19 @@ public class Test : MonoBehaviour
     {
         List<Action> actions = new List<Action>(allPossibleActionsMove.Keys);
         var positionPlayerTemp = new Vector3(transformTest.localPosition.x, transformTest.localPosition.y, transformTest.localPosition.z);
+        var positionTargetTemp =
+            new Vector3(target.transform.position.x, target.position.y, target.transform.position.z);
         //timeMCTS = GameManager.timeValue;
         
         //Dictionary<Transform, Vector3> positionBulletTemp = new Dictionary<Transform, Vector3>();
 
         positionPlayerTemp += new Vector3(allPossibleActionsMove[possibleAction].Item1,0 , allPossibleActionsMove[possibleAction].Item2);
+        
+        int randomActionTarget = Random.Range(0, 4);
 
+        positionTargetTemp += new Vector3(allPossibleActionsMove[actions[randomActionTarget]].Item1, 0,
+            allPossibleActionsMove[actions[randomActionTarget]].Item2);
+        
         /*if (BulletManager.bullets.Count > 0)
         {
             foreach (var b in BulletManager.bullets)
@@ -165,13 +172,17 @@ public class Test : MonoBehaviour
         }*/
 
         var result = 1;
-        while (Math.Abs( Vector3.Distance(positionPlayerTemp , target.position)) > 2) //Attention votre jeu doit être fini !
+        while (Math.Abs( Vector3.Distance(positionPlayerTemp , positionTargetTemp)) > 2) //Attention votre jeu doit être fini !
         {
             int selectedAction = Random.Range(0, 4);
             
             positionPlayerTemp += new Vector3(allPossibleActionsMove[actions[selectedAction]].Item1, 0, allPossibleActionsMove[actions[selectedAction]].Item2);
             
-            
+            randomActionTarget = Random.Range(0, 4);
+
+            positionTargetTemp += new Vector3(allPossibleActionsMove[actions[randomActionTarget]].Item1, 0,
+                allPossibleActionsMove[actions[randomActionTarget]].Item2);
+
             /*foreach (var b in positionBulletTemp)
             {
                 b.Key.position += b.Value;
@@ -192,7 +203,6 @@ public class Test : MonoBehaviour
             //timeMCTS -= deltaTimeConstant;
 
         }
-        
         
         return result; //0 si perdu 1 si win
     }
