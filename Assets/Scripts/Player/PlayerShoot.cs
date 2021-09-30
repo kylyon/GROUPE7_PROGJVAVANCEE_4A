@@ -40,7 +40,7 @@ public class PlayerShoot : MonoBehaviour
 
         if (fireRate < 0)
         {
-            if (playerNumber == 0)
+            if (playerNumber == 0 || playerNumber == 3)
             {
                 float random = Random.Range(0, 1f);
                 if (random > 0.5)
@@ -48,7 +48,8 @@ public class PlayerShoot : MonoBehaviour
                     Shoot();
                 }
             }
-            else if (playerNumber == 1 || playerNumber == 2)
+            
+            if (playerNumber == 1 || playerNumber == 2)
             {
                 if (Input.GetAxis("P" + playerNumber + "_Shoot") > 0)
                 {

@@ -23,6 +23,8 @@ public class CameraAnimationPlayerSelection : MonoBehaviour
 
         MainPanel.SetActive(false);
         PlayerSelectionPanel.SetActive(true);
+        camAnim["PlayerSelection"].speed = 1;
+        camAnim["PlayerSelection"].time = 0;
         camAnim.Play();
     }
 

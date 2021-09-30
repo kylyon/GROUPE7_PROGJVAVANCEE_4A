@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class PlayerController : MonoBehaviour
 {
@@ -11,6 +13,8 @@ public class PlayerController : MonoBehaviour
     
     public Dictionary<Action, (int, int)> allPossibleActionsMove;
     List<Action> actions;
+
+    private float x, y;
 
     private Vector3 direction;
     
@@ -25,11 +29,10 @@ public class PlayerController : MonoBehaviour
         {
             playerNumber = GameData.getPlayerJoker();
         }*/
-        
-        
-        Debug.Log(GameData.getPlayerHitman());
-        Debug.Log(playerNumber);
 
+        x = 0;
+        y = 0;
+        
         allPossibleActionsMove = new Dictionary<Action, (int, int)>();
         allPossibleActionsMove.Add(Action.Left, (-1, 0));
         allPossibleActionsMove.Add(Action.Right, (1, 0));
@@ -38,29 +41,33 @@ public class PlayerController : MonoBehaviour
         actions = new List<Action>(allPossibleActionsMove.Keys);
     }
 
-    // Update is called once per frame
-    void FixedUpdate()
+    private void Update()
     {
+        x = 0;
+        y = 0;
 
-        float x = 0;
-        float y = 0;
+        float newX = 0, newY = 0;
 
         if (playerNumber == 0)
         {
             int selectedAction = Random.Range(0, 4);
-            
-            x = allPossibleActionsMove[actions[selectedAction]].Item1;
-            y = allPossibleActionsMove[actions[selectedAction]].Item2;
+
+            newX = allPossibleActionsMove[actions[selectedAction]].Item1;
+            newY = allPossibleActionsMove[actions[selectedAction]].Item2;
         }
 
         if (playerNumber == 1 || playerNumber == 2)
         {
-            x = Input.GetAxis("P" + playerNumber + "_Horizontal");
-            y = Input.GetAxis("P" + playerNumber + "_Vertical");
+            newX = Input.GetAxis("P" + playerNumber + "_Horizontal");
+            newY = Input.GetAxis("P" + playerNumber + "_Vertical");
         }
         
-        
+        Move(newX, newY);
+    }
 
+    // Update is called once per frame
+    void FixedUpdate()
+    {
         playerController.Move(new Vector3(x, -2 * Time.deltaTime, y).normalized * (speed * Time.fixedDeltaTime));
 
         if (x > 0)
@@ -87,4 +94,12 @@ public class PlayerController : MonoBehaviour
             ps.ChangeDirection(new Vector3(0,0,-1));
         }
     }
+
+    public void Move(float newX, float newY)
+    {
+        x = newX;
+        y = newY;
+    }
+
+
 }

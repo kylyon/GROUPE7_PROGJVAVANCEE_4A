@@ -27,13 +27,13 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         _singleton = this;
-        textToDisplayTime.text = timeValue.ToString();
+        DisplayTime(timeValue);
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (SceneManager.GetActiveScene().buildIndex == 1)
+        if (SceneManager.GetActiveScene().buildIndex != 0)
         {
             if (timeValue > 0)
             {

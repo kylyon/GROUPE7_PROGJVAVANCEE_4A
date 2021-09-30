@@ -14,6 +14,12 @@ public class PlayerSelection : MonoBehaviour
     private int p2Position = 0;
 
     public GameObject errorPlayer;
+    public GameObject mainPanel;
+    public GameObject playerSelectionPanel;
+
+    public Animation camTransition;
+    
+    private float waitingTime = 0f;
 
     private void Start()
     {
@@ -25,33 +31,51 @@ public class PlayerSelection : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Q) && p1Position >= 0)
-        {
-            p1Position--;
-        }
+        waitingTime -= Time.deltaTime;
         
-        if (Input.GetKeyDown(KeyCode.D) && p1Position <= 0)
+        if (waitingTime <= 0)
         {
-            p1Position++;
+            if (Input.GetAxis("P1_Horizontal") < 0 && p1Position >= 0)
+            {
+                p1Position--;
+            }
+            
+            if (Input.GetAxis("P1_Horizontal") > 0 && p1Position <= 0)
+            {
+                p1Position++;
+            }
+            
+            if (Input.GetAxis("P2_Horizontal") < 0 && p2Position >= 0)
+            {
+                p2Position--;
+            }
+            
+            if (Input.GetAxis("P2_Horizontal") > 0 && p2Position <= 0)
+            {
+                p2Position++;
+            }
+            waitingTime = 0.2f;
         }
-        
-        if (Input.GetKeyDown(KeyCode.LeftArrow) && p2Position >= 0)
-        {
-            p2Position--;
-        }
-        
-        if (Input.GetKeyDown(KeyCode.RightArrow) && p2Position <= 0)
-        {
-            p2Position++;
-        }
+
+        p1Position = Mathf.Clamp(p1Position, -1, 1);
+        p2Position = Mathf.Clamp(p2Position, -1, 1);
         
         
         p1Controller.rectTransform.anchoredPosition = new Vector2(p1Position * 400 ,p1Controller.rectTransform.anchoredPosition.y) ;
         p2Controller.rectTransform.anchoredPosition = new Vector2(p2Position * 400, p2Controller.rectTransform.anchoredPosition.y);
         
         Debug.Log(p1Position);
+        
+        if (Input.GetAxis("Cancel") > 0)
+        {
+            playerSelectionPanel.SetActive(false);
+            mainPanel.SetActive(true);
+            camTransition["PlayerSelection"].speed = -1;
+            camTransition["PlayerSelection"].time = camTransition["PlayerSelection"].length;
+            camTransition.Play();
+        }
 
-        if (Input.GetKeyDown(KeyCode.Return))
+        if (Input.GetAxis("Action") > 0)
         {
             if (p1Position != p2Position)
             {
