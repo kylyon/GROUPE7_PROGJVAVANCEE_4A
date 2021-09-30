@@ -409,8 +409,8 @@ GameObject:
   - component: {fileID: 1173928109}
   - component: {fileID: 1173928108}
   - component: {fileID: 1173928107}
-  - component: {fileID: 1173928112}
   - component: {fileID: 1173928111}
+  - component: {fileID: 1173928112}
   m_Layer: 0
   m_Name: Plane
   m_TagString: Untagged
@@ -502,18 +502,14 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1173928106}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4cdb54243d0c06c45b18567a294e4e4b, type: 3}
+  m_Script: {fileID: 11500000, guid: 60ff30090493bf74fac17dd14490697c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  transformTest: {fileID: 474863670}
+  mctsTransform: {fileID: 474863670}
   target: {fileID: 903905064}
-  redCube: {fileID: 903905061}
-  bullet: {fileID: 7582210764854706821, guid: df82f187dab148f408686da114705c44, type: 3}
-  ps: {fileID: 2102069690}
-  destination: {x: 10, y: -10, z: 0}
-  targetLastPosition: {x: 0, y: 0, z: 0}
+  height: 100
   timeMCTS: 90
 --- !u!114 &1173928112
 MonoBehaviour:

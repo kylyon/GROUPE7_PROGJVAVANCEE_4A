@@ -53,6 +53,11 @@ public class Node
     {
         return childrens;
     }
+    
+    public bool HasChildrens()
+    {
+        return childrens.Count > 0;
+    }
 
     public void UpdateNode()
     {

@@ -60,39 +60,43 @@ public class Test : MonoBehaviour
     void Update()
     {
 
-        if (Vector3.Distance(mctsTransform.position , target.position) > 2)
+        if (mctsTransform.gameObject.GetComponent<PlayerController>().playerNumber == 3)
         {
-            //Debug.Log(.)"Next Step");
-
-            for (int i = 0; i < height; i++)
+            if (GameManager.timeValue > 0)
             {
+                //Debug.Log(.)"Next Step");
+
+                for (int i = 0; i < height; i++)
+                {
                 
-                ComputeMCTS(GetBestAction());
+                    ComputeMCTS(GetBestAction());
+                }
+            
+
+                bestAction = this.root.GetBestChild().GetAction();
+            
+                //Debug.Log(.)$"Best Action :{bestAction} : {root.GetBestChild().GetVictories()}/{root.GetBestChild().GetTry()}");
+
+                /*foreach (var c in root.childrens)
+                {
+                    //Debug.Log(.)$"{c.action} : {c.GetVictories()}/{c.GetTry()}");
+                }*/
+            
+                var x = allPossibleActionsMove[bestAction].Item1;
+                var y = allPossibleActionsMove[bestAction].Item2;
+
+                if (GameData.getPlayerJoker() == 3)
+                {
+                    mctsTransform.gameObject.GetComponent<PlayerController>().Move(x, y);
+
+                }
+            
+                root = new Node();
+                //UnityEditor.EditorApplication.isPlaying = false;
+                //Debug.Log(.)"====================================");
             }
-            
-
-            bestAction = this.root.GetBestChild().GetAction();
-            
-            //Debug.Log(.)$"Best Action :{bestAction} : {root.GetBestChild().GetVictories()}/{root.GetBestChild().GetTry()}");
-
-            /*foreach (var c in root.childrens)
-            {
-                //Debug.Log(.)$"{c.action} : {c.GetVictories()}/{c.GetTry()}");
-            }*/
-            
-            var x = allPossibleActionsMove[bestAction].Item1;
-            var y = allPossibleActionsMove[bestAction].Item2;
-
-            if (GameData.getPlayerJoker() == 3)
-            {
-                mctsTransform.gameObject.GetComponent<PlayerController>().Move(x, y);
-
-            }
-            
-            root = new Node();
-            //UnityEditor.EditorApplication.isPlaying = false;
-            //Debug.Log(.)"====================================");
         }
+        
 
     }
     
@@ -129,7 +133,7 @@ public class Test : MonoBehaviour
         while (childs.Count > 0)
         {
             bestChild = bestChild.GetBestChild();
-            if (bestChild.GetChildrens().Count > 0)
+            if (bestChild.HasChildrens())
             {
                 childs = new List<Node>(bestChild.GetChildrens());
             }
