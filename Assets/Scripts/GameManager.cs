@@ -39,12 +39,15 @@ public class GameManager : MonoBehaviour
             {
                 timeValue -= Time.deltaTime;
                 DisplayTime(timeValue);
+
+                if (BulletController.jokerScore + BulletController.hitmanScore > 0)
+                {
+                    EndGame();
+                }
             }
             else
             {
-                timeValue = 0;
-                winEndMenu.SetActive(true);
-                Time.timeScale = 0f;
+                EndGame();
             }
 
             hitmanScoreToDisplay.text = BulletController.hitmanScore.ToString();
@@ -65,6 +68,15 @@ public class GameManager : MonoBehaviour
         float seconds = Mathf.FloorToInt(timeToDisplay % 60);
 
         textToDisplayTime.text = $"{minutes:00}:{seconds:00}";
+    }
+
+    void EndGame()
+    {
+        timeValue = 0;
+        winEndMenu.SetActive(true);
+        BulletController.hitmanScore = 0;
+        BulletController.jokerScore = 0;
+        Time.timeScale = 0f;
     }
 
 }

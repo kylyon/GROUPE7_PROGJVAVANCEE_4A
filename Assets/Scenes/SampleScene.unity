@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.45100665, g: 0.5008589, b: 0.5743022, a: 1}
+  m_IndirectSpecularColor: {r: 0.45100635, g: 0.5008588, b: 0.57430285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1322,7 +1322,7 @@ GameObject:
   - component: {fileID: 1003413947}
   - component: {fileID: 1003413949}
   - component: {fileID: 1003413950}
-  - component: {fileID: 1003413951}
+  - component: {fileID: 1003413952}
   m_Layer: 0
   m_Name: Script
   m_TagString: Untagged
@@ -1386,7 +1386,7 @@ MonoBehaviour:
   hitmanScoreToDisplay: {fileID: 926686949}
   jokerScoreToDisplay: {fileID: 69009699}
   winEndMenu: {fileID: 2029779066}
---- !u!114 &1003413951
+--- !u!114 &1003413952
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1395,17 +1395,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 1003413946}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4cdb54243d0c06c45b18567a294e4e4b, type: 3}
+  m_Script: {fileID: 11500000, guid: 60ff30090493bf74fac17dd14490697c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  transformTest: {fileID: 2022067946}
+  mctsTransform: {fileID: 2022067946}
   target: {fileID: 1651933463}
-  redCube: {fileID: 1651933458}
-  bullet: {fileID: 7582210764854706821, guid: df82f187dab148f408686da114705c44, type: 3}
-  ps: {fileID: 2022067941}
-  destination: {x: 0, y: 0, z: 0}
-  targetLastPosition: {x: 0, y: 0, z: 0}
-  timeMCTS: 65.40735
+  height: 9999
+  timeMCTS: 87.57575
 --- !u!1 &1030325925
 GameObject:
   m_ObjectHideFlags: 0
@@ -2173,11 +2169,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1550907814}
   m_CullTransparentMesh: 1
---- !u!143 &1651933458 stripped
-CharacterController:
-  m_CorrespondingSourceObject: {fileID: 6155944513638275543, guid: fc54bfbb58ed8f34783fbcdcc27321c5, type: 3}
-  m_PrefabInstance: {fileID: 1145587800397939857}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1651933463 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 607787442925317168, guid: fc54bfbb58ed8f34783fbcdcc27321c5, type: 3}
@@ -2495,17 +2486,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1988044726}
   m_CullTransparentMesh: 1
---- !u!114 &2022067941 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8821582505156195139, guid: d3a7a1b09879d0d4da041a33a7856caa, type: 3}
-  m_PrefabInstance: {fileID: 6090258685925852346}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f455b86772c1b5247bf5b620d6a5c43b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &2022067946 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5984803953227582353, guid: d3a7a1b09879d0d4da041a33a7856caa, type: 3}
@@ -2920,14 +2900,6 @@ PrefabInstance:
     - target: {fileID: 1145587798661415418, guid: fc54bfbb58ed8f34783fbcdcc27321c5, type: 3}
       propertyPath: m_Enabled
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1145587800384501509, guid: fc54bfbb58ed8f34783fbcdcc27321c5, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -0.01715
-      objectReference: {fileID: 0}
-    - target: {fileID: 1145587800384501509, guid: fc54bfbb58ed8f34783fbcdcc27321c5, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0.01539
       objectReference: {fileID: 0}
     - target: {fileID: 1739629332266899295, guid: fc54bfbb58ed8f34783fbcdcc27321c5, type: 3}
       propertyPath: m_Enabled

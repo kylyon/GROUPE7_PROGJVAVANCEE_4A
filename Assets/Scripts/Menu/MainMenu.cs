@@ -12,10 +12,14 @@ public class MainMenu : MonoBehaviour
 
     private int menuSelect;
 
+    public GameObject mainPanel;
+
     public Button[] buttons;
     // Start is called before the first frame update
     void Start()
     {
+        mainPanel.SetActive(true);
+        
         menuSelect = -1;
     }
 

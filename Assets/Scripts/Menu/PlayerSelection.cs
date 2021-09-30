@@ -10,6 +10,9 @@ public class PlayerSelection : MonoBehaviour
     public Image p1Controller;
     public Image p2Controller;
 
+    public GameObject random;
+    public GameObject mcts;
+
     private int p1Position = 0;
     private int p2Position = 0;
 
@@ -24,7 +27,7 @@ public class PlayerSelection : MonoBehaviour
     private void Start()
     {
         GameData.setPlayerHitman(0);
-        GameData.setPlayerJoker(0);
+        GameData.setPlayerJoker(3);
     }
 
 
@@ -54,18 +57,34 @@ public class PlayerSelection : MonoBehaviour
             {
                 p2Position++;
             }
-            waitingTime = 0.2f;
+            waitingTime = 0.3f;
         }
 
         p1Position = Mathf.Clamp(p1Position, -1, 1);
         p2Position = Mathf.Clamp(p2Position, -1, 1);
+
+        if ( (p1Position == 1 && p2Position == 0) || (p2Position == 1 && p1Position == 0))
+        {
+            random.SetActive(true);
+        }
+        else
+        {
+            random.SetActive(false);
+        }
+        
+        if ( (p1Position == -1 && p2Position == 0) || (p2Position == -1 && p1Position == 0))
+        {
+            mcts.SetActive(true);
+        }
+        else
+        {
+            mcts.SetActive(false);
+        }
         
         
         p1Controller.rectTransform.anchoredPosition = new Vector2(p1Position * 400 ,p1Controller.rectTransform.anchoredPosition.y) ;
         p2Controller.rectTransform.anchoredPosition = new Vector2(p2Position * 400, p2Controller.rectTransform.anchoredPosition.y);
-        
-        Debug.Log(p1Position);
-        
+
         if (Input.GetAxis("Cancel") > 0)
         {
             playerSelectionPanel.SetActive(false);
@@ -83,7 +102,7 @@ public class PlayerSelection : MonoBehaviour
                 {
                     case -1:
                         GameData.setPlayerHitman(1);
-                        Debug.Log(GameData.getPlayerHitman());
+                        //Debug.Log(GameData.getPlayerHitman());
                         break;
                     case 1:
                         GameData.setPlayerJoker(1);

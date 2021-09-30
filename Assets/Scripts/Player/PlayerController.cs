@@ -21,14 +21,16 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        /*if (this.gameObject.tag.Equals("Hitman"))
+        if (this.gameObject.tag.Equals("Hitman"))
         {
             playerNumber = GameData.getPlayerHitman();
         }
         if (this.gameObject.tag.Equals("Joker"))
         {
             playerNumber = GameData.getPlayerJoker();
-        }*/
+        }
+        
+        Debug.Log($"{gameObject.tag} : {playerNumber}");
 
         x = 0;
         y = 0;
@@ -48,7 +50,7 @@ public class PlayerController : MonoBehaviour
 
         float newX = 0, newY = 0;
 
-        if (playerNumber == 0)
+        if (playerNumber == 0 )
         {
             int selectedAction = Random.Range(0, 4);
 
@@ -68,6 +70,8 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
+        Debug.Log($"{x}, {y}");
+        
         playerController.Move(new Vector3(x, -2 * Time.deltaTime, y).normalized * (speed * Time.fixedDeltaTime));
 
         if (x > 0)

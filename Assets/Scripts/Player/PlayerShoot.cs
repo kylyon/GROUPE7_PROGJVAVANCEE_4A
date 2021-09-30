@@ -17,14 +17,14 @@ public class PlayerShoot : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        /*if (this.gameObject.tag.Equals("Hitman"))
+        if (this.gameObject.tag.Equals("Hitman"))
         {
             playerNumber = GameData.getPlayerHitman();
         }
         if (this.gameObject.tag.Equals("Joker"))
         {
             playerNumber = GameData.getPlayerJoker();
-        }*/
+        }
     }
 
     public void ChangeDirection(Vector3 direction)
@@ -63,7 +63,8 @@ public class PlayerShoot : MonoBehaviour
     public void Shoot()
     {
         var newBullet = Instantiate(bullet, new Vector3(shooterPosition.position.x, shooterPosition.position.y, shooterPosition.position.z), Quaternion.Euler(0,0,0));
-        BulletManager.Instance().AddBullet(newBullet.transform, shootDirection);
+        var index = BulletManager.Instance().AddBullet(newBullet.transform.position, shootDirection);
+        newBullet.GetComponent<BulletController>().SetIndex(index);
         fireRate = 0.6f;
     }
 }

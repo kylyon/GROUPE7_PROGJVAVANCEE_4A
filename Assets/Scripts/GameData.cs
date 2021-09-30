@@ -5,8 +5,8 @@ using UnityEngine;
 public static class GameData
 {
  
-    private static int playerHitman;
-    private static int playerJoker;
+    private static int playerHitman = 0;
+    private static int playerJoker = 3;
 
     public static void setPlayerHitman(int player)
     {

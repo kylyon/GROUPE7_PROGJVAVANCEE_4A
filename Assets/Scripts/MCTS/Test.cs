@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 public enum Action
@@ -12,26 +13,17 @@ public enum Action
 
 public class Test : MonoBehaviour
 {
-    public Transform transformTest;
+    public Transform mctsTransform;
     public Transform target;
 
-
-    public Collider redCube;
-
-    public Collider bullet;
-
-    public PlayerShoot ps;
-    
-    
-    public Vector3 destination;
-    public Vector3 targetLastPosition;
-    
     public Dictionary<Action, (int, int)> allPossibleActionsResult;
     public Dictionary<Action, (int, int)> allPossibleActionsMove;
 
     private List<Action> actionsToDo;
 
     private Node root;
+
+    public int height = 9999;
 
     private float time = 5f;
 
@@ -57,7 +49,7 @@ public class Test : MonoBehaviour
         allPossibleActionsMove.Add(Action.Right, (1, 0));
         allPossibleActionsMove.Add(Action.Up, (0, 1));
         allPossibleActionsMove.Add(Action.Down, (0, -1));
-        //allPossibleActionsMove.Add(Action.Shoot, (0, 0));
+        allPossibleActionsMove.Add(Action.Shoot, (0, 0));
 
         actionsToDo = new List<Action>();
 
@@ -68,10 +60,16 @@ public class Test : MonoBehaviour
     void Update()
     {
 
-        if (Vector3.Distance(transformTest.position , target.position) > 2)
+        if (Vector3.Distance(mctsTransform.position , target.position) > 2)
         {
             //Debug.Log(.)"Next Step");
-            ComputeMCTS(root, 5);
+
+            for (int i = 0; i < height; i++)
+            {
+                
+                ComputeMCTS(GetBestAction());
+            }
+            
 
             bestAction = this.root.GetBestChild().GetAction();
             
@@ -84,9 +82,13 @@ public class Test : MonoBehaviour
             
             var x = allPossibleActionsMove[bestAction].Item1;
             var y = allPossibleActionsMove[bestAction].Item2;
-            
-            transformTest.gameObject.GetComponent<PlayerController>().Move(x, y);
 
+            if (GameData.getPlayerJoker() == 3)
+            {
+                mctsTransform.gameObject.GetComponent<PlayerController>().Move(x, y);
+
+            }
+            
             root = new Node();
             //UnityEditor.EditorApplication.isPlaying = false;
             //Debug.Log(.)"====================================");
@@ -94,20 +96,9 @@ public class Test : MonoBehaviour
 
     }
     
-    void ComputeMCTS(Node root, int height)
+    void ComputeMCTS(Node root)
     {
-        if (height < 0)
-        {
-            return;
-        }
-
-        if (root.childrens.Count > 0)
-        {
-            ComputeMCTS(root.GetBestChild(), height);
-            return;
-        }
-
-        int numberTry = 30;
+        int numberTry = 100;
 
         foreach (var possibleAction in allPossibleActionsMove) //Expansion
         {
@@ -127,81 +118,105 @@ public class Test : MonoBehaviour
             root.AddChildren(temp);
         }
         root.UpdateNode();
-        
-        
 
-        Node bestChild = null;
-        float max = -1;
-        
-        foreach (var child in this.root.GetChildrens())
+    }
+
+    Node GetBestAction()
+    {
+        Node bestChild = root;
+        List<Node> childs = new List<Node>(root.GetChildrens());
+
+        while (childs.Count > 0)
         {
-            if(max < (float)child.GetVictories()/(float)child.GetTry()) //SimulationResult > -1
+            bestChild = bestChild.GetBestChild();
+            if (bestChild.GetChildrens().Count > 0)
             {
-                max = (float) child.GetVictories() / (float) child.GetTry();
-                bestChild = child;
+                childs = new List<Node>(bestChild.GetChildrens());
             }
         }
-        
-        ComputeMCTS(bestChild, height - 1);
 
+        return bestChild;
     }
     
     int SimulateResult(Action possibleAction, float deltaTimeConstant)
     {
         List<Action> actions = new List<Action>(allPossibleActionsMove.Keys);
-        var positionPlayerTemp = new Vector3(transformTest.localPosition.x, transformTest.localPosition.y, transformTest.localPosition.z);
-        var positionTargetTemp =
-            new Vector3(target.transform.position.x, target.position.y, target.transform.position.z);
-        //timeMCTS = GameManager.timeValue;
+        timeMCTS = GameManager.timeValue;
         
-        //Dictionary<Transform, Vector3> positionBulletTemp = new Dictionary<Transform, Vector3>();
-
+        var positionPlayerTemp = new Vector3(mctsTransform.localPosition.x, mctsTransform.localPosition.y, mctsTransform.localPosition.z);
+        var positionTargetTemp = new Vector3(target.transform.position.x, target.position.y, target.transform.position.z);
+        
         positionPlayerTemp += new Vector3(allPossibleActionsMove[possibleAction].Item1,0 , allPossibleActionsMove[possibleAction].Item2);
-        
         int randomActionTarget = Random.Range(0, 4);
 
         positionTargetTemp += new Vector3(allPossibleActionsMove[actions[randomActionTarget]].Item1, 0,
             allPossibleActionsMove[actions[randomActionTarget]].Item2);
-        
-        /*if (BulletManager.bullets.Count > 0)
+
+        List<(Vector3, Vector3)> positionBulletTemp = new List<(Vector3, Vector3)>();
+
+        if (BulletManager.bullets.Count > 0)
         {
             foreach (var b in BulletManager.bullets)
             {
-                positionBulletTemp.Add(b.Key, b.Value);
+                positionBulletTemp.Add((b.Item1, b.Item2));
             }
-        }*/
+        }
+        
+        var directionMCTS = allPossibleActionsMove[possibleAction];
+        var directionTarget = allPossibleActionsMove[actions[randomActionTarget]];
 
-        var result = 1;
-        while (Math.Abs( Vector3.Distance(positionPlayerTemp , positionTargetTemp)) > 2) //Attention votre jeu doit être fini !
+        var result = 0;
+        
+        while (timeMCTS > 0) //Attention votre jeu doit être fini !
         {
-            int selectedAction = Random.Range(0, 4);
+            int selectedAction = Random.Range(0, 5);
             
             positionPlayerTemp += new Vector3(allPossibleActionsMove[actions[selectedAction]].Item1, 0, allPossibleActionsMove[actions[selectedAction]].Item2);
-            
-            randomActionTarget = Random.Range(0, 4);
 
-            positionTargetTemp += new Vector3(allPossibleActionsMove[actions[randomActionTarget]].Item1, 0,
-                allPossibleActionsMove[actions[randomActionTarget]].Item2);
-
-            /*foreach (var b in positionBulletTemp)
+            if (actions[selectedAction] == Action.Shoot)
             {
-                b.Key.position += b.Value;
-            }*/
-
-            if (-26 > positionPlayerTemp.x || positionPlayerTemp.x > 26)
-            {
-                result = 0;
-                return result;
+                var posShootBull =
+                    new Vector3(
+                        positionPlayerTemp.x + (-0.015f * directionMCTS.Item1), 0,
+                        positionPlayerTemp.z + (-0.014f * directionMCTS.Item2));
+                positionBulletTemp.Add((posShootBull, new Vector3(directionMCTS.Item1, 0, directionMCTS.Item2)));
             }
             
-            if (-38 > positionPlayerTemp.z || positionPlayerTemp.z > 15)
+            randomActionTarget = Random.Range(0, 5);
+
+            positionTargetTemp += new Vector3(allPossibleActionsMove[actions[randomActionTarget]].Item1, 0, allPossibleActionsMove[actions[randomActionTarget]].Item2);
+            
+            if (actions[randomActionTarget] == Action.Shoot)
             {
-                result = 0;
-                return result;
+                var posShootBull =
+                    new Vector3(
+                        positionTargetTemp.x + (-0.015f * directionTarget.Item1), 0,
+                        positionTargetTemp.z + (-0.014f * directionTarget.Item2));
+                positionBulletTemp.Add((posShootBull, new Vector3(directionTarget.Item1, 0, directionTarget.Item2)));
             }
 
-            //timeMCTS -= deltaTimeConstant;
+            for (int i = 0; i < positionBulletTemp.Count; i++)
+            {
+                var tempNewPosBull = positionBulletTemp[i].Item1;
+                tempNewPosBull += positionBulletTemp[i].Item2;
+                positionBulletTemp[i] = (tempNewPosBull, positionBulletTemp[i].Item2);
+                
+                if (Vector3.Distance(positionBulletTemp[i].Item1, positionPlayerTemp) < 0.5)
+                {
+                    result = 0;
+                    return result;
+                }
+                
+                if (Vector3.Distance(positionBulletTemp[i].Item1, positionTargetTemp) < 0.5)
+                {
+                    result = 1;
+                    return result;
+                }
+            }
 
+            timeMCTS -= deltaTimeConstant;
+            directionMCTS = allPossibleActionsMove[actions[selectedAction]];
+            directionTarget = allPossibleActionsMove[actions[randomActionTarget]];
         }
         
         return result; //0 si perdu 1 si win

@@ -9,12 +9,14 @@ public class BulletController : MonoBehaviour
     public static int hitmanScore;
     public static int jokerScore;
 
+    private int index;
+
     private void OnCollisionEnter(Collision other)
     {
         if (other.gameObject.tag.Equals("Ground"))
         {
             //Debug.Log("Ground");
-            BulletManager.Instance().RemoveBullet(this.gameObject.transform);
+            BulletManager.Instance().RemoveBullet(index);
             
         }
         
@@ -29,8 +31,14 @@ public class BulletController : MonoBehaviour
             {
                 hitmanScore += 1;
             }
-            BulletManager.Instance().RemoveBullet(this.gameObject.transform);
+            BulletManager.Instance().RemoveBullet(index);
+            Destroy(this.gameObject);
             
         }
+    }
+
+    public void SetIndex(int index)
+    {
+        this.index = index;
     }
 }
