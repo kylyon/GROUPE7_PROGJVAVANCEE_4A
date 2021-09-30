@@ -42,7 +42,7 @@ public class Test : MonoBehaviour
     void Start()
     {
         
-        Debug.Log(target.position);
+        //Debug.Log(.)target.position);
         
         
         /*allPossibleActionsResult = new Dictionary<Action, (int, int)>();
@@ -70,14 +70,17 @@ public class Test : MonoBehaviour
 
         if (Vector3.Distance(transformTest.position , target.position) > 2)
         {
-            //Debug.Log("Next Step");
+            //Debug.Log(.)"Next Step");
             ComputeMCTS(root, 5);
 
             bestAction = this.root.GetBestChild().GetAction();
             
-            //Debug.Log($"Best Action :{bestAction} : {root.GetBestChild().GetVictories()}/{root.GetBestChild().GetTry()}");
+            //Debug.Log(.)$"Best Action :{bestAction} : {root.GetBestChild().GetVictories()}/{root.GetBestChild().GetTry()}");
 
-            
+            /*foreach (var c in root.childrens)
+            {
+                //Debug.Log(.)$"{c.action} : {c.GetVictories()}/{c.GetTry()}");
+            }*/
             
             var x = allPossibleActionsMove[bestAction].Item1;
             var y = allPossibleActionsMove[bestAction].Item2;
@@ -86,6 +89,7 @@ public class Test : MonoBehaviour
 
             root = new Node();
             //UnityEditor.EditorApplication.isPlaying = false;
+            //Debug.Log(.)"====================================");
         }
 
     }
@@ -96,32 +100,40 @@ public class Test : MonoBehaviour
         {
             return;
         }
-        
-        int numberTry = 15;
-        float max = -1;
-        
+
+        if (root.childrens.Count > 0)
+        {
+            ComputeMCTS(root.GetBestChild(), height);
+            return;
+        }
+
+        int numberTry = 30;
+
         foreach (var possibleAction in allPossibleActionsMove) //Expansion
         {
             Node temp = new Node();
             temp.parent = root;
             temp.SetAction(possibleAction.Key);
-            
+        
             int numberVictory = 0;
-            
+        
             for (int i = 0; i < numberTry; i++)
             {
                 numberVictory += SimulateResult(possibleAction.Key, Time.deltaTime); //Simulation (a faire plusieurs fois !)
             }
-            
+        
             temp.AddVictories(numberVictory, numberTry); //Retropropagation
 
             root.AddChildren(temp);
         }
         root.UpdateNode();
+        
+        
 
         Node bestChild = null;
+        float max = -1;
         
-        foreach (var child in root.GetChildrens())
+        foreach (var child in this.root.GetChildrens())
         {
             if(max < (float)child.GetVictories()/(float)child.GetTry()) //SimulationResult > -1
             {
@@ -137,7 +149,7 @@ public class Test : MonoBehaviour
     int SimulateResult(Action possibleAction, float deltaTimeConstant)
     {
         List<Action> actions = new List<Action>(allPossibleActionsMove.Keys);
-        var positionPlayerTemp = transformTest.localPosition;
+        var positionPlayerTemp = new Vector3(transformTest.localPosition.x, transformTest.localPosition.y, transformTest.localPosition.z);
         //timeMCTS = GameManager.timeValue;
         
         //Dictionary<Transform, Vector3> positionBulletTemp = new Dictionary<Transform, Vector3>();

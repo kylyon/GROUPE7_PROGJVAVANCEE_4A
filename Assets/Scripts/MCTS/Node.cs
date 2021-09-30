@@ -10,6 +10,13 @@ public class Node
     public Action action;
     public Node parent;
 
+    public Node()
+    {
+        numberVictory = 0;
+        numberTry = 0;
+        childrens = new List<Node>();
+    }
+    
     public void AddVictories(int nbVictory, int nbTry)
     {
         numberVictory += nbVictory;
