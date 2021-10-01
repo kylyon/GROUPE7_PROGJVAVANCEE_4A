@@ -40,6 +40,8 @@ public class GameManager : MonoBehaviour
                 timeValue -= Time.deltaTime;
                 DisplayTime(timeValue);
 
+                
+                //Debug.Log(BulletController.jokerScore + BulletController.hitmanScore);
                 if (BulletController.jokerScore + BulletController.hitmanScore > 0)
                 {
                     EndGame();

@@ -63,8 +63,7 @@ public class PlayerShoot : MonoBehaviour
     public void Shoot()
     {
         var newBullet = Instantiate(bullet, new Vector3(shooterPosition.position.x, shooterPosition.position.y, shooterPosition.position.z), Quaternion.Euler(0,0,0));
-        var index = BulletManager.Instance().AddBullet(newBullet.transform.position, shootDirection);
-        newBullet.GetComponent<BulletController>().SetIndex(index);
+        BulletManager.Instance().AddBullet(newBullet.transform,newBullet.transform.position, shootDirection);
         fireRate = 0.6f;
     }
 }

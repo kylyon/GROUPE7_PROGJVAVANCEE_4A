@@ -64,7 +64,7 @@ public class Test : MonoBehaviour
         {
             if (GameManager.timeValue > 0)
             {
-                //Debug.Log(.)"Next Step");
+                Debug.Log("Next Step");
 
                 for (int i = 0; i < height; i++)
                 {
@@ -74,12 +74,12 @@ public class Test : MonoBehaviour
 
                 bestAction = this.root.GetBestChild().GetAction();
             
-                //Debug.Log(.)$"Best Action :{bestAction} : {root.GetBestChild().GetVictories()}/{root.GetBestChild().GetTry()}");
+                Debug.Log($"Best Action :{bestAction} : {root.GetBestChild().GetVictories()}/{root.GetBestChild().GetTry()}");
 
-                /*foreach (var c in root.childrens)
+                foreach (var c in root.childrens)
                 {
-                    //Debug.Log(.)$"{c.action} : {c.GetVictories()}/{c.GetTry()}");
-                }*/
+                    Debug.Log($"{c.action} : {c.GetVictories()}/{c.GetTry()}");
+                }
             
                 var x = allPossibleActionsMove[bestAction].Item1;
                 var y = allPossibleActionsMove[bestAction].Item2;
@@ -92,7 +92,7 @@ public class Test : MonoBehaviour
             
                 root = new Node();
                 //UnityEditor.EditorApplication.isPlaying = false;
-                //Debug.Log(.)"====================================");
+                Debug.Log("====================================");
             }
         }
         
@@ -101,7 +101,7 @@ public class Test : MonoBehaviour
     
     void ComputeMCTS(Node root)
     {
-        int numberTry = 30;
+        int numberTry = 100;
 
         foreach (var possibleAction in allPossibleActionsMove) //Expansion
         {
@@ -131,9 +131,10 @@ public class Test : MonoBehaviour
 
         while (childs.Count > 0)
         {
-            bestChild = bestChild.GetBestChild();
+            
             if (bestChild.HasChildrens())
             {
+                bestChild = bestChild.GetBestChild();
                 childs = new List<Node>(bestChild.GetChildrens());
             }
         }
@@ -161,7 +162,7 @@ public class Test : MonoBehaviour
         {
             foreach (var b in BulletManager.bullets)
             {
-                positionBulletTemp.Add((b.Item1, b.Item2));
+                positionBulletTemp.Add((BulletManager.bullets[b.Key].Item1, BulletManager.bullets[b.Key].Item2));
             }
         }
         

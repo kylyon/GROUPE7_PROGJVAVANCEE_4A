@@ -10,7 +10,7 @@ public class BulletManager : MonoBehaviour
 
     private static BulletManager _singleton;
 
-    public static List<(Vector3, Vector3)> bullets;
+    public static new Dictionary<Transform, (Vector3, Vector3)> bullets;
 
     public float speed = 20f;
 
@@ -18,30 +18,31 @@ public class BulletManager : MonoBehaviour
     void Start()
     {
         _singleton = this;
-        bullets = new List<(Vector3, Vector3)>();
+        bullets = new Dictionary<Transform, (Vector3, Vector3)>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        for (int i = 0; i < bullets.Count; i++)
+        var bulletsList = new List<Transform>(bullets.Keys);
+        foreach (var bullet in bulletsList)
         {
-            var pos = bullets[i].Item1;
-            pos += bullets[i].Item2 * (speed * Time.deltaTime);
-            bullets[i] = (pos, bullets[i].Item1);
+            var pos = bullets[bullet].Item1;
+            pos += bullets[bullet].Item2 * (speed * Time.deltaTime);
+            bullet.position = pos;
+            bullets[bullet] = (pos, bullets[bullet].Item2);
         }
     }
 
 
-    public int AddBullet(Vector3 bullet, Vector3 direction)
+    public void AddBullet(Transform transform,Vector3 bulletPosition, Vector3 direction)
     {
-        bullets.Add((bullet, direction));
-        return bullets.Count - 1;
+        bullets.Add(transform,(bulletPosition, direction));
     }
     
-    public void RemoveBullet(int bullet)
+    public void RemoveBullet(Transform bullet)
     {
-        bullets.RemoveAt(bullet);
+        bullets.Remove(bullet);
     }
     
 }

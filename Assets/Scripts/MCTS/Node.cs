@@ -6,7 +6,7 @@ public class Node
 {
     public int numberVictory = 0;
     public int numberTry = 0;
-    public List<Node> childrens = new List<Node>();
+    public List<Node> childrens;//= new List<Node>();
     public Action action;
     public Node parent;
 

@@ -70,7 +70,7 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        Debug.Log($"{x}, {y}");
+        //Debug.Log($"{x}, {y}");
         
         playerController.Move(new Vector3(x, -2 * Time.deltaTime, y).normalized * (speed * Time.fixedDeltaTime));
 
