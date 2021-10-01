@@ -27,7 +27,7 @@ public class Test : MonoBehaviour
 
     private float time = 5f;
 
-    public float timeMCTS = GameManager.timeValue;
+    //public float timeMCTS = GameManager.timeValue;
     
     private Action bestAction;
     // Start is called before the first frame update
@@ -68,7 +68,6 @@ public class Test : MonoBehaviour
 
                 for (int i = 0; i < height; i++)
                 {
-                
                     ComputeMCTS(GetBestAction());
                 }
             
@@ -102,7 +101,7 @@ public class Test : MonoBehaviour
     
     void ComputeMCTS(Node root)
     {
-        int numberTry = 100;
+        int numberTry = 30;
 
         foreach (var possibleAction in allPossibleActionsMove) //Expansion
         {
@@ -145,7 +144,7 @@ public class Test : MonoBehaviour
     int SimulateResult(Action possibleAction, float deltaTimeConstant)
     {
         List<Action> actions = new List<Action>(allPossibleActionsMove.Keys);
-        timeMCTS = GameManager.timeValue;
+        var timeMCTS = GameManager.timeValue;
         
         var positionPlayerTemp = new Vector3(mctsTransform.localPosition.x, mctsTransform.localPosition.y, mctsTransform.localPosition.z);
         var positionTargetTemp = new Vector3(target.transform.position.x, target.position.y, target.transform.position.z);
@@ -218,7 +217,7 @@ public class Test : MonoBehaviour
                 }
             }
 
-            timeMCTS -= deltaTimeConstant;
+            timeMCTS -= 1;
             directionMCTS = allPossibleActionsMove[actions[selectedAction]];
             directionTarget = allPossibleActionsMove[actions[randomActionTarget]];
         }

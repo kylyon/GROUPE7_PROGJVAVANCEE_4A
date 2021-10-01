@@ -1400,7 +1400,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mctsTransform: {fileID: 2022067946}
   target: {fileID: 1651933463}
-  height: 100
+  height: 5
   timeMCTS: 87.57575
 --- !u!1 &1030325925
 GameObject:
