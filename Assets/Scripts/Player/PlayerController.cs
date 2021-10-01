@@ -21,14 +21,14 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if (this.gameObject.tag.Equals("Hitman"))
+        /*if (this.gameObject.tag.Equals("Hitman"))
         {
             playerNumber = GameData.getPlayerHitman();
         }
         if (this.gameObject.tag.Equals("Joker"))
         {
             playerNumber = GameData.getPlayerJoker();
-        }
+        }*/
         
         Debug.Log($"{gameObject.tag} : {playerNumber}");
 
